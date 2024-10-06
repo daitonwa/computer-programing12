@@ -1,0 +1,40 @@
+#Jason Yang
+
+#Problem 1
+name = input("Please enter your name: ")
+
+lowercase_input = name.lower()
+
+print("Your name in all lowercase letters is:",lowercase_input)
+
+#Problem 2
+replace_input = input("Please enter a input: ")
+
+spacereplace_input = replace_input.replace(" ", "...")
+
+print("Modified Text: " , spacereplace_input)
+
+#Problem 3
+def convert(text):
+    text = text.replace(":)", "🙂")
+
+    text = text.replace(":(", "🙁")
+
+    return text
+
+def main():
+    user_input = input("Please enter some text: ")
+
+    print("Converted text:", convert(user_input))
+
+if __name__ == "__main__":
+    main()
+
+#Problem 4
+c = 300000000
+
+mass = int(input("Enter your mass: "))
+
+energy = mass * c ** 2
+
+print("The energy is: ",energy,"joules")
