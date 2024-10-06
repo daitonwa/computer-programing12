@@ -1,15 +1,17 @@
 #Jason Yang
 
 #Problem 1
+#input
 name = input("Please enter your name: ")
-
+#lowercase input to make it lowercase
 lowercase_input = name.lower()
 
 print("Your name in all lowercase letters is:",lowercase_input)
 
 #Problem 2
+#replace input to get input to change
 replace_input = input("Please enter a input: ")
-
+#replace funciton
 spacereplace_input = replace_input.replace(" ", "...")
 
 print("Modified Text: " , spacereplace_input)
@@ -31,10 +33,11 @@ if __name__ == "__main__":
     main()
 
 #Problem 4
+#speed of light equals c
 c = 300000000
-
+#input function for mass
 mass = int(input("Enter your mass: "))
-
+#the formula
 energy = mass * c ** 2
 
 print("The energy is: ",energy,"joules")
