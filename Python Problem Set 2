@@ -1,0 +1,52 @@
+# Zoo Database
+def zoo_database():
+    zoo_animals = []  # List to store the animals
+    for i in range(5):
+        animal = input(f"Enter species of animal {i + 1}: ").lower()  # Take input from user, normalize to lowercase
+        zoo_animals.append(animal)  # Add the animal to the list
+
+    # Print the list of animals
+    print(f"Zoo’s Animals: {zoo_animals}")
+
+    # Count specific animals and print the results
+    print(f"There are {zoo_animals.count('lion')} lions")
+    print(f"There are {zoo_animals.count('panda')} pandas")
+    print(f"There are {zoo_animals.count('bear')} bears")
+
+# This is to convert RGB to hex
+def rgb_to_hex(rgb):
+    return '#{:02X}{:02X}{:02X}'.format(rgb[0], rgb[1], rgb[2])
+
+# Colour Converter Program
+
+def colour_converter():
+    """
+    Takes RGB input from the user and converts the numbers to a hex code using a function, and prints the hex code.
+    """
+    red = int(input("Enter value for Red (0-255): "))  # Input for red
+    green = int(input("Enter value for Green (0-255): "))  # Input for green
+    blue = int(input("Enter value for Blue (0-255): "))  # Input for blue
+
+    # Create an RGB tuple from the input values
+    rgb_tuple = (red, green, blue)
+
+    # Convert RGB tuple to hex using the rgb_to_hex function
+    hex_color = rgb_to_hex(rgb_tuple)
+
+    # Print the resulting hex color
+    print(f"The hexadecimal color code is: {hex_color}")
+
+
+# Main function to call programs
+def main():
+    # Call zoo database program
+    zoo_database()
+
+    # Call colour converter program
+    colour_converter()
+
+
+# Run the main function
+if __name__ == "__main__":
+    main()
+
