@@ -1,0 +1,97 @@
+# import file command
+import os
+
+# File to store data
+RESULT_FILE = "calculator_results.txt"
+
+
+# Function to load previous result from file
+def load_previous_result():
+    if os.path.exists(RESULT_FILE):
+        with open(RESULT_FILE, 'r') as file:
+            result = file.read()
+            if result.strip():
+                return float(result)
+    return None
+# ^^^ if not previous result return none^^^
+
+# Function to save result to file
+def save_result(result):
+    with open(RESULT_FILE, 'w') as file:
+        file.write(str(result))
+
+
+# Main program
+def main():
+    last_result = load_previous_result()
+    history = []
+
+    while True:
+        print("\nSimple CLI Calculator")
+
+        # Check if user wants to use the last result
+        if last_result is not None:
+            use_last = input(f"Use last result ({last_result}) as the first number? (y/n): ").strip().lower()
+            if use_last == 'y':
+                num1 = last_result
+            else:
+                num1 = int(input("Enter first number: "))
+        else:
+            num1 = int(input("Enter first number: "))
+
+        num2 = int(input("Enter second number: "))
+
+        operation = input("Enter operation: +, -, *, /, ** or add, subtract, multiply, divide, exponential: ").strip()
+
+        # Perform calculation based on operator
+        if operation in ["+", "add"]:
+            result = num1 + num2
+            equation = f"{num1} + {num2} = {result}"
+
+        elif operation in ["-", "subtract"]:
+            result = num1 - num2
+            equation = f"{num1} - {num2} = {result}"
+
+        elif operation in ["*", "multiply"]:
+            result = num1 * num2
+            equation = f"{num1} * {num2} = {result}"
+
+        elif operation in ["/", "divide"]:
+            if num2 != 0:  # Avoid division by zero
+                result = num1 / num2
+                equation = f"{num1} / {num2} = {result}"
+            else:
+                print("Error: Division by zero is not allowed.")
+                continue
+
+        elif operation in ["**", "exponential"]:
+            result = num1 ** num2
+            equation = f"{num1} ** {num2} = {result}"
+
+        else:
+            print("Error: Please re-enter values and double-check the spelling of the operation.")
+            continue
+
+        # Print the full equation and save it
+        print(f"Calculation: {equation}")
+        history.append(equation)
+        last_result = result
+        save_result(result)
+
+        # Option to continue or stop and stip and lower to lowercase and removes leading space
+        cont = input("Do you want to perform another calculation? (y/n): ").strip().lower()
+        if cont != 'y':
+            break
+
+    # Save history to file or display
+    save_history = input("Do you want to save your calculation history? (y/n): ").strip().lower()
+    if save_history == 'y':
+        with open('calculator_history.txt', 'w') as file:
+            file.write("\n".join(history))
+        print("History saved to 'calculator_history.txt'.")
+
+    print("Goodbye!")
+
+
+if __name__ == "__main__":
+    main()
