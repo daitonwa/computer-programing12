@@ -1,0 +1,103 @@
+#import os for atm question
+import os
+
+def draw_pyramid(n):
+    # positive n = right side pyrmaid
+    if n > 0:
+        for i in range(1, n + 1, 2):
+            print(' ' * ((n - i) // 2) + '#' * i)
+    # negative n = upside down pyrmaid
+    elif n < 0:
+        for i in range(-n, 0, -2):
+            print(' ' * ((-n - i) // 2) + '#' * i)
+    else:
+        print("No pyramid for zero input.")
+
+# Take input from the user
+try:
+    user_input = int(input("Enter a integer for the pyramid base: "))
+    draw_pyramid(user_input)
+except ValueError:
+    print("Please enter a valid integer.")
+
+
+
+
+#atm problem
+
+# Function to clear screen
+def clear_screen():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+# Function to ask for passcode
+def set_passcode():
+    while True:
+        passcode = input("Please enter a 4-digit number as your passcode: ")
+        if passcode.isdigit() and len(passcode) == 4:
+            return passcode
+        else:
+            print("Invalid input. Please enter a 4-digit number.")
+
+
+# function to set password attempts to 3
+def authenticate_user(passcode):
+    attempts = 3
+    while attempts > 0:
+        clear_screen()
+        entered_code = input("Please enter your passcode: ")
+        if entered_code == passcode:
+            return True
+        else:
+            attempts -= 1
+            print(f"Incorrect passcode. You have {attempts} attempts left.")
+    return False
+
+
+# Function for ATM operations
+def atm_operations():
+    balance = 0
+    while True:
+        print(f"\nWelcome. Balance: {balance}")
+        action = input("Choose an action - Deposit (D), Withdraw (W), Exit (E): ").upper()
+
+        if action == 'D':
+            amount = input("Enter deposit amount: ")
+            if amount.isdigit():
+                balance += int(amount)
+                print(f"Deposited: {amount}. New Balance: {balance}")
+            else:
+                print("Invalid amount.")
+
+        elif action == 'W':
+            amount = input("Enter withdrawal amount: ")
+            if amount.isdigit():
+                amount = int(amount)
+                if amount <= balance:
+                    balance -= amount
+                    print(f"Withdrew: {amount}. New Balance: {balance}")
+                else:
+                    print("Insufficient funds.")
+            else:
+                print("Invalid amount.")
+
+        elif action == 'E':
+            print("Thank you for using the RHS ATM. Come again next time")
+            break
+        else:
+            print("Invalid action.")
+
+
+# Main program flow
+def main():
+    passcode = set_passcode()
+    clear_screen()
+
+    if authenticate_user(passcode):
+        atm_operations()
+    else:
+        print("Too many incorrect attempts.")
+
+
+# Run the main program
+main()
