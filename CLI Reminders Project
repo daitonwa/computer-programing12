@@ -1,0 +1,120 @@
+import os
+import datetime
+
+# File to save reminders
+REMINDERS_FILE = "reminders.txt"
+
+
+def load_reminders():
+    """Load reminders from the file."""
+    if os.path.exists(REMINDERS_FILE):
+        with open(REMINDERS_FILE, "r") as file:
+            return [line.strip().split("|") for line in file.readlines()]
+    return []
+
+
+def save_reminders(reminders):
+    """Save reminders to the file"""
+    with open(REMINDERS_FILE, "w") as file:
+        for reminder in reminders:
+            file.write("|".join(reminder) + "\n")
+
+
+def add_reminder(reminders):
+    """Add a new reminder"""
+    name = input("Enter reminder name: ").strip()
+    date_str = input("Enter date (YYYY-MM-DD): ").strip()
+    time_str = input("Enter time (HH:MM, 24-hour format): ").strip()
+
+    try:
+        # Validate date and time format
+        datetime.datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
+        reminders.append([name, date_str, time_str])
+        print(f"Reminder '{name}' added!")
+    except ValueError:
+        print("Invalid date/time format. Please try again.")
+#^if try function dont work it resorts to the except function and print invalid date
+
+def display_reminders(reminders):
+    """Display all reminders"""
+    if reminders:
+        print("\nYour Reminders:")
+        index = 1  
+        for reminder in reminders:
+            name = reminder[0]
+            date = reminder[1]
+            time = reminder[2]
+            print(f"{index}. {name} - {date} at {time}")
+            index += 1 
+    else:
+        print("\nNo reminders found!")
+
+
+
+def remove_reminder(reminders):
+    """Remove a completed reminder"""
+    display_reminders(reminders)
+    if not reminders:
+        return
+    try:
+        index = int(input("Enter the number of the reminder to remove: "))
+        if 1 <= index <= len(reminders):
+            removed = reminders.pop(index - 1)
+            print(f"Removed reminder: {removed[0]}")
+        else:
+            print("Invalid number. Please try again.")
+    except ValueError:
+        print("Invalid input. Please enter a number.")
+
+
+def sort_reminders(reminders):
+    """Sort reminders by date and time"""
+    reminders.sort(key=lambda x: f"{x[1]} {x[2]}")
+
+
+def show_upcoming_holidays():
+    """Display upcoming holidays"""
+    holidays = {
+        "2024-12-25": "Christmas Day",
+        "2025-01-01": "New Year's Day",
+        "2025-02-14": "Valentines Day"
+    }
+    today = datetime.datetime.now().strftime("%Y-%m-%d")
+    print("\nUpcoming Holidays:")
+    for date, name in holidays.items():
+        if date >= today:
+            print(f"{date}: {name}")
+
+
+def main():
+    """Main program loop."""
+    reminders = load_reminders()
+    while True:
+        print("\nTO-DO List Menu:")
+        print("1. Add Reminder")
+        print("2. Display Reminders")
+        print("3. Remove Reminder")
+        print("4. Show Upcoming Holidays")
+        print("5. Quit")
+
+        choice = input("Enter your choice (1-5): ").strip()
+
+        if choice == "1":
+            add_reminder(reminders)
+        elif choice == "2":
+            sort_reminders(reminders)
+            display_reminders(reminders)
+        elif choice == "3":
+            remove_reminder(reminders)
+        elif choice == "4":
+            show_upcoming_holidays()
+        elif choice == "5":
+            save_reminders(reminders)
+            print("Reminders saved! Thank for using Jasons reminders! Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+
+
+if __name__ == "__main__":
+    main()
