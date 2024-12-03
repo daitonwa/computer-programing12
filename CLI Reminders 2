@@ -1,0 +1,80 @@
+import datetime
+
+#Make an empty to do list
+todo_list = []
+
+def validate_date(date_str):
+    #This function makes sure that the date inputted is usable and retruns error if doesn't
+    try:
+        date = datetime.datetime.strptime(date_str, "%d-%m-%Y")
+        return date
+    except ValueError:
+        return None
+
+def add_reminder():
+    #Add a new reminder to the to-do list.
+    name = input("Enter the name of the reminder: ").strip()
+    while True:
+        date_str = input("Enter the date (DD-MM-YYYY): ").strip()
+        date = validate_date(date_str)
+        if date:
+            todo_list.append({"name": name, "date": date_str})
+            print(f"Reminder '{name}' added for {date_str}.")
+            break
+        else:
+            print("Invalid date format or invalid date. Please try again :(")
+
+def display_reminders():
+    #Displays all reminders
+    if not todo_list:
+        print("Your to-do list is empty!")
+    else:
+        print("\nCurrent To-Do List:")
+        for index, item in enumerate(todo_list, start=1):
+            print(f"{index}. {item['name']} (Date: {item['date']})")
+        print()
+
+def remove_reminder():
+    #Remove a reminder from the to-do list
+    if not todo_list:
+        print("Your to-do list is empty, nothing to remove!")
+        return
+    try:
+        display_reminders()
+        index = int(input("Enter the number of the reminder to remove: ").strip())
+        if 1 <= index <= len(todo_list):
+            removed = todo_list.pop(index - 1)
+            print(f"Removed reminder '{removed['name']}' scheduled for {removed['date']}.")
+        else:
+            print("Invalid number. Please select a valid reminder.")
+    except ValueError:
+        print("Please enter a valid number.")
+
+def main():
+    #Main loop to manage the to-do list
+    print("Welcome to the To-Do List App!")
+    while True:
+        print("\nOptions:")
+        print("1. Add a reminder")
+        print("2. Display reminders")
+        print("3. Remove a reminder")
+        print("4. Exit")
+        try:
+            choice = int(input("Choose an option (1-4): ").strip())
+            if choice == 1:
+                add_reminder()
+            elif choice == 2:
+                display_reminders()
+            elif choice == 3:
+                remove_reminder()
+            elif choice == 4:
+                print("Goodbye!")
+                break
+            else:
+                print("Invalid choice. Please select a number between 1 and 4.")
+        except ValueError:
+            print("Please enter a valid number.")
+
+#Run the code
+if __name__ == "__main__":
+    main()
