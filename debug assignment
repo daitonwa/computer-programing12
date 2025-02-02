@@ -1,0 +1,36 @@
+import random
+
+# Function to roll a six-sided die
+def roll_die():
+    return random.randint(1, 6)  # Generate a random number between 1 and 6
+
+# Function to roll the die multiple times
+def roll_multiple_dice(num_rolls):
+    rolls = []
+    for _ in range(num_rolls):
+        rolls.append(roll_die())  # Call the roll_die function
+    return rolls  # Return the list of rolls
+
+# Main function to ask the user for the number of rolls and display the result
+def main():
+    print("Welcome to the Dice Roller!")
+
+    while True:
+        try:
+            num_rolls = int(input("How many times would you like to roll the die? "))
+            if num_rolls <= 0:
+                print("Please enter a positive integer.")
+            else:
+                break
+        except ValueError:
+            print("Invalid input! Please enter a valid integer.")
+
+    rolls = roll_multiple_dice(num_rolls)
+    
+    print("Results of the dice rolls:")
+    for roll in rolls:
+        print(roll)
+
+# Call the main function to run the program
+if __name__ == "__main__":
+    main()
