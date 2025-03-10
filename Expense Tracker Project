@@ -1,0 +1,117 @@
+# Expense Tracker Program
+
+# Global list to store expense records
+expenses = []
+
+
+def add_expense():
+    """
+    Adds a new expense to the tracker.
+    Asks the user for expense details such as category, amount, and date.
+    """
+    try:
+        category = input("Enter expense category: ").strip()
+        amount = float(input("Enter expense amount: ").strip())
+        date = input("Enter expense date (YYYY-MM-DD): ").strip()
+
+        # Create a dictionary for the expense and append to the expenses list
+        expense = {'category': category, 'amount': amount, 'date': date}
+        expenses.append(expense)
+        print("Expense added successfully!")
+    except ValueError:
+        print("Invalid input for amount. Please enter a numerical value.")
+
+
+def view_expenses():
+    
+    #Displays all expenses in a clear and organized format.
+ 
+    if not expenses:
+        print("No expenses to display.")
+        return
+
+    print("\nAll Expenses:")
+    for idx, expense in enumerate(expenses, start=1):
+        print(f"{idx}. Category: {expense['category']}, Amount: {expense['amount']}, Date: {expense['date']}")
+
+
+def filter_expenses():
+    
+    #Filters and displays expenses based on a user-provided category.
+    
+    category = input("Enter category to filter: ").strip()
+    filtered = [expense for expense in expenses if expense['category'].lower() == category.lower()]
+
+    if not filtered:
+        print(f"No expenses found for category '{category}'.")
+        return
+
+    print(f"\nExpenses in category '{category}':")
+    for idx, expense in enumerate(filtered, start=1):
+        print(f"{idx}. Amount: {expense['amount']}, Date: {expense['date']}")
+
+
+def calculate_total_expenses():
+    
+    #Calculates and displays the total of all expense amounts.
+    
+    total = sum(expense['amount'] for expense in expenses)
+    print(f"\nTotal Expenses: {total}")
+
+
+def delete_expense():
+    """
+    Deletes a specific expense identified by category and date.
+    If no matching expense is found, an appropriate message is shown.
+    """
+    category = input("Enter category of expense to delete: ").strip()
+    date = input("Enter date of expense to delete (YYYY-MM-DD): ").strip()
+
+    found = False
+    #Loop through a copy of the list to remove items
+    for expense in expenses[:]:
+        if expense['category'].lower() == category.lower() and expense['date'] == date:
+            expenses.remove(expense)
+            found = True
+            print("Expense deleted successfully!")
+            break
+
+    if not found:
+        print("No expense found with the provided category and date.")
+
+
+def main():
+    """
+    Main function that runs the expense tracker.
+    Displays a menu for the user to choose from different operations.
+    """
+    while True:
+        print("\nExpense Tracker Menu:")
+        print("1. Add New Expense")
+        print("2. View All Expenses")
+        print("3. Filter Expenses by Category")
+        print("4. Calculate Total Expenses")
+        print("5. Delete Specific Expense")
+        print("6. Exit")
+
+        choice = input("Enter your choice (1-6): ").strip()
+
+        if choice == '1':
+            add_expense()
+        elif choice == '2':
+            view_expenses()
+        elif choice == '3':
+            filter_expenses()
+        elif choice == '4':
+            calculate_total_expenses()
+        elif choice == '5':
+            delete_expense()
+        elif choice == '6':
+            print("Exiting Expense Tracker. Goodbye!")
+            break
+        else:
+            print("Invalid choice. Please select a valid option (1-6).")
+
+
+if __name__ == "__main__":
+    main()
