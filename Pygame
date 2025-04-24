@@ -1,0 +1,115 @@
+import pygame
+import random
+import sys
+
+#Start Pygame
+pygame.init()
+
+#Screen dimensions
+WIDTH, HEIGHT = 800, 600
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Ali Safdari's Pygame Project")
+
+#Colours
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+WHITE = (255, 255, 255)
+
+#Fonts
+font = pygame.font.SysFont(None, 36)
+
+#Clock and timer
+clock = pygame.time.Clock()
+start_ticks = pygame.time.get_ticks()
+GAME_DURATION = 30
+
+#Player square
+player_size = 50
+player = pygame.Rect(WIDTH // 2 - player_size // 2, HEIGHT // 2 - player_size // 2, player_size, player_size)
+player_color = BLUE
+
+#Target
+target_size = 50
+target = pygame.Rect(600, 300, target_size, target_size)
+
+#Score
+score = 0
+
+#Target movement variables
+target_speed = 5
+target_dx = random.choice([-target_speed, target_speed])
+target_dy = random.choice([-target_speed, target_speed])
+
+def move_target():
+    global target_dx, target_dy
+    target.x += target_dx
+    target.y += target_dy
+    if target.left <= 0 or target.right >= WIDTH:
+        target_dx *= -1
+    if target.top <= 0 or target.bottom >= HEIGHT:
+        target_dy *= -1
+
+#Main game loop
+running = True
+while running:
+    clock.tick(60)
+    screen.fill(WHITE)
+
+    #Timer
+    seconds = (pygame.time.get_ticks() - start_ticks) // 1000
+    time_left = max(0, GAME_DURATION - seconds)
+    if time_left == 0:
+        running = False
+
+    #Event handling
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+    #Key handling
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and player.left > 0:
+        player.x -= 5
+    if keys[pygame.K_RIGHT] and player.right < WIDTH:
+        player.x += 5
+    if keys[pygame.K_UP] and player.top > 0:
+        player.y -= 5
+    if keys[pygame.K_DOWN] and player.bottom < HEIGHT:
+        player.y += 5
+
+    #Move target
+    move_target()
+
+    #Collision detection
+    if player.colliderect(target):
+        player_color = RED
+        score += 1
+        #Relocate target
+        target.x = random.randint(0, WIDTH - target_size)
+        target.y = random.randint(0, HEIGHT - target_size)
+    else:
+        player_color = BLUE
+
+    #Draw everything
+    pygame.draw.rect(screen, player_color, player)
+    pygame.draw.rect(screen, GREEN, target)
+
+    #Render score
+    score_text = font.render(f"Score: {score}", True, (0, 0, 0))
+    screen.blit(score_text, (10, 10))
+
+    #Render timer 
+    timer_text = font.render(f"Time Left: {time_left}s", True, (0, 0, 0))
+    screen.blit(timer_text, (WIDTH - 200, 10))
+
+    pygame.display.flip()
+
+#End screen
+screen.fill(WHITE)
+end_text = font.render(f"Game Over! Final Score: {score}", True, (0, 0, 0))
+screen.blit(end_text, (WIDTH // 2 - 150, HEIGHT // 2))
+pygame.display.flip()
+pygame.time.wait(3000)
+pygame.quit()
